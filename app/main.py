@@ -10,6 +10,7 @@ from app.lib.db.dependencies import get_db
 # Import routes
 from app.routes.salle.controller import router as salle_router
 
+from app.routes.reservation.controller import router as reservation_router
 
 models.Base.metadata.create_all(bind=engine)  # ← Crée les tables à partir des modèles
 
@@ -30,3 +31,5 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 # Include routes
 app.include_router(salle_router)
+app.include_router(reservation_router)
+
