@@ -10,7 +10,13 @@ def get_all_reservations(db: Session) -> List[Reservation]:
 
 
 def get_reservation_by_id(db: Session, reservation_id: str) -> Optional[Reservation]:
-    return db.query(Reservation).filter(Reservation.id == reservation_id).first()
+    reservation = db.query(Reservation).filter(Reservation.id == reservation_id).first()
+    if not reservation:
+        raise HTTPException(
+            status_code=404, 
+            detail="Réservation introuvable"
+        )
+    return reservation
 
 
 def create_reservation(db: Session, reservation: ReservationCreate) -> Reservation:

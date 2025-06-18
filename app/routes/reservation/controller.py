@@ -11,7 +11,6 @@ router = APIRouter(prefix="/reservation", tags=["reservation"])
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def create_reservation(reservation: ReservationCreate, db: Session = Depends(get_db)):
-
     new_reservation = services.create_reservation(db, reservation)
     return {"data": ReservationOut.from_orm(new_reservation)}
 
@@ -19,8 +18,6 @@ def create_reservation(reservation: ReservationCreate, db: Session = Depends(get
 @router.get("/{reservation_id}")
 def get_reservation(reservation_id: str, db: Session = Depends(get_db)):
     reservation = services.get_reservation_by_id(db, reservation_id)
-    if not reservation:
-        raise HTTPException(status_code=404, detail="Réservation introuvable")
     return {"data": ReservationOut.from_orm(reservation)}
 
 
