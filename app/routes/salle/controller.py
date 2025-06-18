@@ -36,7 +36,7 @@ def get_salle(salle_id: str, db: Session = Depends(get_db)):
 def get_all_salles(db: Session = Depends(get_db)):
     salle = services.get_all_salles(db)
     if not salle:
-        raise HTTPException(status_code=404, detail="Salle not found")
+        raise HTTPException(status_code=400, detail="No salles")
     return {"data": [SalleOut.from_orm(s) for s in salle]}
 
 
