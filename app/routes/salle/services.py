@@ -3,14 +3,27 @@ from fastapi import Depends
 from app.lib.db.models import Salle
 from app.routes.salle.schemas import SalleCreate, SalleUpdate
 from sqlalchemy.orm import Session
+from fastapi import HTTPException
 
 
 def get_all_salles(db: Session) -> List[Salle]:
-    return db.query(Salle).all()
+    salles = db.query(Salle).all()
+    if not salles:
+        raise HTTPException(
+            status_code=400,
+            detail="No salles found"
+        )
+    return salles
 
 
 def get_salle_by_id(db: Session, salle_id: str) -> Salle:
-    return db.query(Salle).filter(Salle.id == salle_id).first()
+    salle = db.query(Salle).filter(Salle.id == salle_id).first()
+    if not salle:
+        raise HTTPException(
+            status_code=404,
+            detail="Salle not found"
+        )
+    return salle
 
 
 def create_salle(db: Session, salle: SalleCreate) -> Salle:
