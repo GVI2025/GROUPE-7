@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "API_GROUPE_7"
+version = "1.0.0"
+description = "API_GROUPE_7"
+authors = ["Unknown"]
+readme = "README.md"
+packages = [
+    { include = "app" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = ">=0.115.12,<0.116.0"
+uvicorn = {version = ">=0.34.2,<0.35.0", extras = ["standard"]}
+sqlalchemy = ">=2.0.41,<3.0.0"
+alembic = ">=1.16.1,<2.0.0"
+pytest = ">=8.3.5,<9.0.0"
+httpx = ">=0.28.1,<0.29.0"
+pydantic = {extras = ["email"], version = "^2.11.5"}
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+test = "scripts.test:main"
+migrate = "scripts.migrate:main"
