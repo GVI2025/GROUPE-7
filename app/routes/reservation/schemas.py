@@ -1,27 +1,27 @@
 from typing import Optional
 from pydantic import BaseModel
-from datetime import date, time
+import datetime
 
 
 class ReservationCreate(BaseModel):
     salle_id: str
-    date: date
-    heure: time
+    date: datetime.date
+    heure: datetime.time
     utilisateur: str
 
 
 class ReservationUpdate(BaseModel):
     salle_id: Optional[str] = None
-    date: Optional[date] = None
-    heure: Optional[time] = None
+    date: Optional[datetime.date] = None
+    heure: Optional[datetime.time] = None
     utilisateur: Optional[str] = None
 
 
 class ReservationOut(BaseModel):
     id: str
     salle_id: str
-    date: date
-    heure: time
+    date: datetime.date
+    heure: datetime.time
     utilisateur: str
 
     class Config:
