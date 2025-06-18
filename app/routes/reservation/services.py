@@ -48,8 +48,24 @@ def create_reservation(db: Session, reservation: ReservationCreate) -> Reservati
 def update_reservation(db: Session, reservation_id: str, update_data: ReservationUpdate) -> Optional[Reservation]:
     reservation = get_reservation_by_id(db, reservation_id)
     if not reservation:
-        return None
+        raise HTTPException(
+            status_code=404, 
+            detail="Réservation introuvable"
+        )
+    # Vérifie si la salle est disponible pour la nouvelle date et heure
+    if update_data.salle_id or update_data.date or update_data.heure:
+        existing_reservation = db.query(Reservation).filter(
+            Reservation.salle_id == update_data.salle_id if update_data.salle_id is not None else reservation.salle_id,
+            Reservation.date == (update_data.date if update_data.date is not None else reservation.date),
+            Reservation.heure == (update_data.heure if update_data.heure is not None else reservation.heure)
+        ).first()
+        if existing_reservation and existing_reservation.id != reservation_id:
+            raise HTTPException(
+                status_code=409,
+                detail="La salle est déjà réservée à cette date et heure."
+            )
 
+    # Met à jour la réservation avec les nouvelles données
     db.query(Reservation).filter(Reservation.id == reservation_id).update({
         Reservation.salle_id: update_data.salle_id if update_data.salle_id is not None else reservation.salle_id,
         Reservation.date: update_data.date if update_data.date is not None else reservation.date,

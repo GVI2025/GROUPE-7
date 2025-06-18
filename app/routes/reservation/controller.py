@@ -30,13 +30,10 @@ def get_all_reservations(db: Session = Depends(get_db)):
 @router.put("/{reservation_id}")
 def update_reservation(reservation_id: str, reservation_update: ReservationUpdate, db: Session = Depends(get_db)):
     reservation = services.update_reservation(db, reservation_id, reservation_update)
-    if not reservation:
-        raise HTTPException(status_code=404, detail="Réservation introuvable")
     return {"data": ReservationOut.from_orm(reservation)}
 
 
 @router.delete("/{reservation_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_reservation(reservation_id: str, db: Session = Depends(get_db)):
     success = services.delete_reservation(db, reservation_id)
-    if not success:
-        raise HTTPException(status_code=404, detail="Réservation introuvable")
+    return
