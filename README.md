@@ -25,6 +25,7 @@ docker-compose exec -it api-python bash
 export PYTHONPATH=/app
 cd app/tests
 pytest salles_routes.py
+pytest reservation_routes.py
 exit
 ```
 
