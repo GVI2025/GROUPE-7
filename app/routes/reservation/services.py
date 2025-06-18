@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 from typing import List, Optional
 from sqlalchemy.orm import Session
+from sqlalchemy import extract
 from app.lib.db.models import Reservation
 from app.routes.reservation.schemas import ReservationCreate, ReservationUpdate
 
@@ -24,7 +25,7 @@ def create_reservation(db: Session, reservation: ReservationCreate) -> Reservati
     existing_reservation = db.query(Reservation).filter(
         Reservation.salle_id == reservation.salle_id,
         Reservation.date == reservation.date,
-        Reservation.heure == reservation.heure
+        extract('hour', Reservation.heure) == reservation.heure.hour
     ).first()
     if existing_reservation:
         raise HTTPException(
