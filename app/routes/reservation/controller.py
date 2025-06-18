@@ -11,13 +11,9 @@ router = APIRouter(prefix="/reservation", tags=["reservation"])
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def create_reservation(reservation: ReservationCreate, db: Session = Depends(get_db)):
-    try:
-        new_reservation = services.create_reservation(db, reservation)
-        return {"data": ReservationOut.from_orm(new_reservation)}
-    except Exception as e:
-        print("Erreur lors de la création de la réservation :", e)
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+
+    new_reservation = services.create_reservation(db, reservation)
+    return {"data": ReservationOut.from_orm(new_reservation)}
 
 
 @router.get("/{reservation_id}")

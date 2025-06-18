@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from app.lib.db.models import Reservation
@@ -13,6 +14,19 @@ def get_reservation_by_id(db: Session, reservation_id: str) -> Optional[Reservat
 
 
 def create_reservation(db: Session, reservation: ReservationCreate) -> Reservation:
+    # Vérifie si la salle est disponible pour la date et l'heure spécifiées
+    existing_reservation = db.query(Reservation).filter(
+        Reservation.salle_id == reservation.salle_id,
+        Reservation.date == reservation.date,
+        Reservation.heure == reservation.heure
+    ).first()
+    if existing_reservation:
+        raise HTTPException(
+            status_code=409,
+            detail="La salle est déjà réservée à cette date et heure."
+        )
+    
+    # Crée une nouvelle réservation
     nouvelle_reservation = Reservation(
         salle_id=reservation.salle_id,
         date=reservation.date,
