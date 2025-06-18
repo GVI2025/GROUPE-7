@@ -15,7 +15,7 @@ poetry run alembic upgrade head
 exit
 ```
 
-Si un quelconque problème survient avec la base de données, supprimé le fichier app.db et relancé la commande de migration.
+Si un quelconque problème survient avec la base de données, supprimez le fichier app.db et relancez la commande de migration.
 
 ## Tests
 Pour lancer les tests, il faut d'abord se connecter au conteneur de l'API Python, puis exécuter les tests avec pytest. Assurez-vous que le répertoire de travail est correctement défini pour que les tests puissent être trouvés.
