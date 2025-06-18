@@ -2,6 +2,7 @@
 from fastapi import FastAPI, Request, Depends
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.lib.db import models
 from app.lib.db.database import engine
@@ -27,6 +28,14 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
                 "details": exc.errors(),
             }
         },
+    )
+
+# Middleware to handle general exceptions
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"error": {"message": exc.detail}},
     )
 
 # Include routes
