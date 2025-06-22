@@ -5,5 +5,6 @@ services:
     volumes:
       - ./load_test.js:/tests/load_test.js
       - ./results:/results
-    entrypoint: [ "k6", "run", "/tests/load_test.js" ]
+    user: "0:0"  # Run as root to avoid permission issues
+    entrypoint: [ "k6", "run", "--out", "html=/results/test-report.html", "/tests/load_test.js" ]
     network_mode: "host"
