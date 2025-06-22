@@ -4,5 +4,6 @@ services:
     container_name: k6-load-test
     volumes:
       - ./load_test.js:/tests/load_test.js
+      - ./results:/results
     entrypoint: [ "k6", "run", "/tests/load_test.js" ]
     network_mode: "host"

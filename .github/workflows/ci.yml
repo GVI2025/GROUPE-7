@@ -26,7 +26,7 @@ jobs:
 
       - name: Run tests
         run: |
-          poetry run pytest app/tests/
+          poetry run pytest app/tests/*.py
 
   load-test:
     runs-on: ubuntu-latest

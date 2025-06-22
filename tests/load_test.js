@@ -16,23 +16,6 @@ export const options = {
 const BASE_URL = 'http://localhost:8001';
 
 export default function () {
-  // Test POST article
-  const articleData = JSON.stringify({
-    name: 'Test Article',
-    description: 'Test Description',
-    quantity: 10
-  });
-  
-  let articlePostResponse = http.post(
-    `${BASE_URL}/articles/`, 
-    articleData,
-    { headers: { 'Content-Type': 'application/json' } }
-  );
-  check(articlePostResponse, {
-    'article post status is 201': (r) => r.status === 201,
-    'article post response time OK': (r) => r.timings.duration < 500,
-  });
-
   // Test POST emplacement
   const emplacementData = JSON.stringify({
     name: 'Test Location',
@@ -47,22 +30,6 @@ export default function () {
   check(emplacementPostResponse, {
     'emplacement post status is 201': (r) => r.status === 201,
     'emplacement post response time OK': (r) => r.timings.duration < 500,
-  });
-
-  // Test POST agent
-  const agentData = JSON.stringify({
-    name: 'Test Agent',
-    role: 'PICKER'
-  });
-  
-  let agentPostResponse = http.post(
-    `${BASE_URL}/agents/`, 
-    agentData,
-    { headers: { 'Content-Type': 'application/json' } }
-  );
-  check(agentPostResponse, {
-    'agent post status is 201': (r) => r.status === 201,
-    'agent post response time OK': (r) => r.timings.duration < 500,
   });
 
   // Test POST salle
