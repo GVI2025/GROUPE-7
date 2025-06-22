@@ -27,13 +27,13 @@ jobs:
     - name: Run k6 Performance Tests
       run: |
         docker run --rm \
-          -v "${{ github.workspace }}/scripts:/scripts" \
+          -v "${{ github.workspace }}/tests:/tests" \
           -v "${{ github.workspace }}/results:/results" \
           -e K6_WEB_DASHBOARD=true \
           -e K6_WEB_DASHBOARD_EXPORT=/results/test-report.html \
           --network host \
-          grafana/k6 run /scripts/test.js
-      
+          grafana/k6 run /tests/load_test.js
+
     - name: Upload test results
       if: always()
       uses: actions/upload-artifact@v4
