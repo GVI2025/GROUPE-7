@@ -1,0 +1,46 @@
+name: Performance Testing
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  performance-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build and run with Docker Compose
+      run: |
+        # Use docker compose (new format without hyphen)
+        docker compose up -d
+        # Wait for the service to be ready
+        sleep 10
+
+    - name: Create results directory
+      run: mkdir -p results
+
+    - name: Run k6 Performance Tests
+      run: |
+        docker run --rm \
+          -v "${{ github.workspace }}/tests:/tests" \
+          -v "${{ github.workspace }}/results:/results" \
+          -e K6_WEB_DASHBOARD=true \
+          -e K6_WEB_DASHBOARD_EXPORT=/results/test-report.html \
+          --network host \
+          grafana/k6 run /tests/load_test.js
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: k6-report
+        path: results/test-report.html
+
+    - name: Cleanup
+      if: always()
+      run: docker compose down
