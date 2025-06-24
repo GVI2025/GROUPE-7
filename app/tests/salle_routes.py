@@ -45,7 +45,7 @@ def test_get_salle_by_id(client, monkeypatch):
 
 # Test GET /salle/
 def test_get_all_salles(client, monkeypatch):
-    def mock_get_all_salles(db):
+    def mock_get_all_salles(db, disponible=None):
         return [fake_salle]
 
     monkeypatch.setattr(services, "get_all_salles", mock_get_all_salles)
@@ -84,3 +84,22 @@ def test_delete_salle(client, monkeypatch):
 
     assert response.status_code == 204
     assert response.content == b""
+
+# Test GET /salle/ with disponible filter
+def test_get_all_salles_with_filter(client, monkeypatch):
+    def mock_get_all_salles(db, disponible=None):
+        if disponible:
+            return [fake_salle]  # Returns only available rooms
+        return []  # Returns empty list for unavailable rooms
+
+    monkeypatch.setattr(services, "get_all_salles", mock_get_all_salles)
+
+    # Test with disponible=true
+    response = client.get("/salle/?disponible=true")
+    assert response.status_code == 200
+    assert len(response.json()["data"]) == 1
+    assert response.json()["data"][0]["disponible"] == True
+
+    # Test with disponible=false
+    response = client.get("/salle/?disponible=false")
+    assert response.status_code == 200

@@ -8,6 +8,7 @@ class ReservationCreate(BaseModel):
     date: datetime.date
     heure: datetime.time
     utilisateur: str
+    commentaire: Optional[str] = None
 
 
 class ReservationUpdate(BaseModel):
@@ -15,6 +16,7 @@ class ReservationUpdate(BaseModel):
     date: Optional[datetime.date] = None
     heure: Optional[datetime.time] = None
     utilisateur: Optional[str] = None
+    commentaire: Optional[str] = None
 
 
 class ReservationOut(BaseModel):
@@ -23,6 +25,7 @@ class ReservationOut(BaseModel):
     date: datetime.date
     heure: datetime.time
     utilisateur: str
+    commentaire: Optional[str] = None
 
     class Config:
         from_attributes = True

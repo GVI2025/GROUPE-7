@@ -6,8 +6,11 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
 
-def get_all_salles(db: Session) -> List[Salle]:
-    salles = db.query(Salle).all()
+def get_all_salles(db: Session, disponible: bool = None) -> List[Salle]:
+    query = db.query(Salle)
+    if disponible is not None:
+        query = query.filter(Salle.disponible == disponible)
+    salles = query.all()
     if not salles:
         raise HTTPException(
             status_code=400,
