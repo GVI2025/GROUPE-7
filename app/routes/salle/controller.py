@@ -23,8 +23,8 @@ def get_salle(salle_id: str, db: Session = Depends(get_db)):
 
 
 @router.get("/")
-def get_all_salles(db: Session = Depends(get_db)):
-    salle = services.get_all_salles(db)
+def get_all_salles(disponible: bool = None, db: Session = Depends(get_db)):
+    salle = services.get_all_salles(db, disponible)
     return {"data": [SalleOut.from_orm(s) for s in salle]}
 
 
