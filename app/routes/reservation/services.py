@@ -38,7 +38,8 @@ def create_reservation(db: Session, reservation: ReservationCreate) -> Reservati
         salle_id=reservation.salle_id,
         date=reservation.date,
         heure=reservation.heure,
-        utilisateur=reservation.utilisateur
+        utilisateur=reservation.utilisateur,
+        commentaire=reservation.commentaire
     )
     db.add(nouvelle_reservation)
     db.commit()
@@ -72,6 +73,7 @@ def update_reservation(db: Session, reservation_id: str, update_data: Reservatio
         Reservation.date: update_data.date if update_data.date is not None else reservation.date,
         Reservation.heure: update_data.heure if update_data.heure is not None else reservation.heure,
         Reservation.utilisateur: update_data.utilisateur if update_data.utilisateur is not None else reservation.utilisateur,
+        Reservation.commentaire: update_data.commentaire if update_data.commentaire is not None else reservation.commentaire
     })
 
     db.commit()
